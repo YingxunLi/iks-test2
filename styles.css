@@ -1,0 +1,395 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+/* Typography System */
+.main-title {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.small-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.body-text {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.caption {
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.4;
+}
+
+/* Stage Boundaries - 可调整边界 */
+:root {
+    --stage-margin-top: 2vh;
+    --stage-margin-bottom: 2vh;
+    --stage-margin-left: 2vw;
+    --stage-margin-right: 2vw;
+    --content-safe-top: 5vh;
+    --content-safe-bottom: 5vh;
+    --content-safe-left: 5vw;
+    --content-safe-right: 5vw;
+}
+
+/* Background */
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Page Container */
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+/* Fullscreen Media */
+.animation-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.fullscreen-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.model-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.fullscreen-model {
+    width: 100%;
+    height: 100%;
+}
+
+/* Positioning System */
+.top-left {
+    position: absolute;
+    top: var(--content-safe-top);
+    left: var(--content-safe-left);
+}
+
+.top-center {
+    position: absolute;
+    top: var(--content-safe-top);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.top-right {
+    position: absolute;
+    top: var(--content-safe-top);
+    right: var(--content-safe-right);
+}
+
+.center-left {
+    position: absolute;
+    top: 50%;
+    left: var(--content-safe-left);
+    transform: translateY(-50%);
+}
+
+.center-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center-right {
+    position: absolute;
+    top: 50%;
+    right: var(--content-safe-right);
+    transform: translateY(-50%);
+}
+
+.right-center {
+    position: absolute;
+    top: 50%;
+    right: var(--content-safe-right);
+    transform: translateY(-50%);
+}
+
+.bottom-left {
+    position: absolute;
+    bottom: var(--content-safe-bottom);
+    left: var(--content-safe-left);
+}
+
+.bottom-center {
+    position: absolute;
+    bottom: var(--content-safe-bottom);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bottom-right {
+    position: absolute;
+    bottom: var(--content-safe-bottom);
+    right: var(--content-safe-right);
+}
+
+/* IKEA Style Components */
+.primary-button {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    padding: 16px 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.primary-button:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Interactive Circles */
+.circles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.interactive-circle {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    pointer-events: all;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.circle-glow {
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    animation: pulse 2s infinite;
+    transition: all 0.3s ease;
+}
+
+.interactive-circle:hover .circle-glow {
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+    50% { opacity: 1; box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+}
+
+/* 圆圈位置调整 - 你可以在这里修改四个圆圈的位置 */
+#circle-1 { top: 25%; left: 20%; } /* 第一个圆圈位置 */
+#circle-2 { top: 45%; left: 70%; } /* 第二个圆圈位置 */
+#circle-3 { top: 65%; left: 30%; } /* 第三个圆圈位置 */
+#circle-4 { top: 35%; left: 80%; } /* 第四个圆圈位置 */
+
+/* Navigation Index */
+.navigation-container {
+    z-index: 100;
+}
+
+.navigation-index {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    padding: 12px 24px;
+    backdrop-filter: blur(10px);
+    gap: 16px;
+}
+
+.nav-arrow {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.nav-arrow:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.nav-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    min-width: 140px;
+    text-align: center;
+}
+
+/* Close Button */
+.close-button {
+    z-index: 101;
+}
+
+.close-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Info Box */
+.info-box {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 400px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+}
+
+.info-subtitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+    line-height: 1.3;
+}
+
+.info-text {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Smooth Transitions */
+.page {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.page.fade-out {
+    opacity: 0;
+}
+
+.page.fade-in {
+    opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    :root {
+        --content-safe-top: 3vh;
+        --content-safe-bottom: 3vh;
+        --content-safe-left: 3vw;
+        --content-safe-right: 3vw;
+    }
+    
+    .info-box {
+        max-width: 300px;
+        padding: 24px;
+    }
+    
+    .primary-button {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
+    
+    .navigation-index {
+        padding: 10px 20px;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .info-text {
+        font-size: 0.9rem;
+    }
+    
+    .interactive-circle {
+        width: 50px;
+        height: 50px;
+    }
+}

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+    <!-- Background Image -->
+    <div class="background-container">
+        <img src="assets/background.png" alt="Background" class="background-image">
+    </div>
+
+    <!-- Page 1: Ergebnis -->
+    <div class="page" id="page-1" data-page="1">
+        <!-- Animation Container -->
+        <div class="animation-container">
+            <video class="fullscreen-video" id="video-1" autoplay muted>
+                <source src="assets/1.webm" type="video/webm">
+            </video>
+        </div>
+        
+        <!-- Model Container -->
+        <div class="model-container" id="model-1" style="display: none;">
+            <model-viewer 
+                src="assets/1.glb" 
+                camera-controls 
+                auto-rotate 
+                ar 
+                class="fullscreen-model">
+            </model-viewer>
+        </div>
+        
+        <!-- More Information Button -->
+        <div class="button-container bottom-center" id="more-info-btn" style="display: none;">
+            <button class="primary-button">More Information</button>
+        </div>
+    </div>
+
+    <!-- Page 2: Info -->
+    <div class="page" id="page-2" data-page="2" style="display: none;">
+        <!-- Loop Animation -->
+        <div class="animation-container">
+            <video class="fullscreen-video" id="video-2" autoplay muted loop>
+                <source src="assets/2.webm" type="video/webm">
+            </video>
+        </div>
+        
+        <!-- Interactive Circles -->
+        <div class="circles-container">
+            <div class="interactive-circle" id="circle-1" data-state="2.1" style="top: 25%; left: 20%;">
+                <div class="circle-glow"></div>
+            </div>
+            <div class="interactive-circle" id="circle-2" data-state="2.2" style="top: 45%; left: 70%;">
+                <div class="circle-glow"></div>
+            </div>
+            <div class="interactive-circle" id="circle-3" data-state="2.3" style="top: 65%; left: 30%;">
+                <div class="circle-glow"></div>
+            </div>
+            <div class="interactive-circle" id="circle-4" data-state="2.4" style="top: 35%; left: 80%;">
+                <div class="circle-glow"></div>
+            </div>
+        </div>
+        
+        <!-- Navigation Index -->
+        <div class="navigation-container bottom-center">
+            <div class="navigation-index">
+                <button class="nav-arrow" id="nav-prev">&lt;</button>
+                <span class="nav-title" id="nav-title">More Information</span>
+                <button class="nav-arrow" id="nav-next">&gt;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Pages 2.1-2.4 -->
+    <div class="page detail-page" id="page-2-1" data-page="2.1" style="display: none;">
+        <div class="animation-container">
+            <video class="fullscreen-video" id="video-2-1" muted>
+                <source src="assets/2.1.webm" type="video/webm">
+            </video>
+        </div>
+        
+        <div class="close-button top-right">
+            <button class="close-btn" data-target="page-2">×</button>
+        </div>
+        
+        <div class="info-box right-center" id="info-box-2-1" style="display: none;">
+            <h3 class="info-subtitle">Composition</h3>
+            <p class="info-text">Layers of basalt, obsidian, volcanic ash, and pumice</p>
+        </div>
+        
+        <div class="navigation-container bottom-center">
+            <div class="navigation-index">
+                <button class="nav-arrow" data-nav="prev">&lt;</button>
+                <span class="nav-title">Composition</span>
+                <button class="nav-arrow" data-nav="next">&gt;</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="page detail-page" id="page-2-2" data-page="2.2" style="display: none;">
+        <div class="animation-container">
+            <video class="fullscreen-video" id="video-2-2" muted>
+                <source src="assets/2.2.webm" type="video/webm">
+            </video>
+        </div>
+        
+        <div class="close-button top-right">
+            <button class="close-btn" data-target="page-2">×</button>
+        </div>
+        
+        <div class="info-box right-center" id="info-box-2-2" style="display: none;">
+            <h3 class="info-subtitle">Height Range</h3>
+            <p class="info-text">Peak at 4,300 meters</p>
+        </div>
+        
+        <div class="navigation-container bottom-center">
+            <div class="navigation-index">
+                <button class="nav-arrow" data-nav="prev">&lt;</button>
+                <span class="nav-title">Height Range</span>
+                <button class="nav-arrow" data-nav="next">&gt;</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="page detail-page" id="page-2-3" data-page="2.3" style="display: none;">
+        <div class="animation-container">
+            <video class="fullscreen-video" id="video-2-3" muted>
+                <source src="assets/2.3.webm" type="video/webm">
+            </video>
+        </div>
+        
+        <div class="close-button top-right">
+            <button class="close-btn" data-target="page-2">×</button>
+        </div>
+        
+        <div class="info-box right-center" id="info-box-2-3" style="display: none;">
+            <h3 class="info-subtitle">Location</h3>
+            <p class="info-text">Coastal subduction zone, icy summit with glacial rivers</p>
+        </div>
+        
+        <div class="navigation-container bottom-center">
+            <div class="navigation-index">
+                <button class="nav-arrow" data-nav="prev">&lt;</button>
+                <span class="nav-title">Location</span>
+                <button class="nav-arrow" data-nav="next">&gt;</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="page detail-page" id="page-2-4" data-page="2.4" style="display: none;">
+        <div class="animation-container">
+            <video class="fullscreen-video" id="video-2-4" muted>
+                <source src="assets/2.4.webm" type="video/webm">
+            </video>
+        </div>
+        
+        <div class="close-button top-right">
+            <button class="close-btn" data-target="page-2">×</button>
+        </div>
+        
+        <div class="info-box right-center" id="info-box-2-4" style="display: none;">
+            <h3 class="info-subtitle">Status</h3>
+            <p class="info-text">Active — erupts every few hundred years</p>
+        </div>
+        
+        <div class="navigation-container bottom-center">
+            <div class="navigation-index">
+                <button class="nav-arrow" data-nav="prev">&lt;</button>
+                <span class="nav-title">Status</span>
+                <button class="nav-arrow" data-nav="next">&gt;</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
