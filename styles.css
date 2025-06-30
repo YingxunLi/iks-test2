@@ -244,6 +244,23 @@ body {
 #circle-2 { top: 50%; left: 35%; } /* 第二个圆圈位置 */
 #circle-3 { top: 70%; left: 65%; } /* 第三个圆圈位置 */
 #circle-4 { top: 38%; left: 43%; } /* 第四个圆圈位置 */
+#circle-1::before { content: "1"; }
+#circle-2::before { content: "2"; }
+#circle-3::before { content: "3"; }
+#circle-4::before { content: "4"; }
+
+.interactive-circle::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    z-index: 11;
+    pointer-events: none;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
 
 /* Navigation Index */
 .navigation-container {
