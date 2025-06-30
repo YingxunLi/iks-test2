@@ -177,25 +177,26 @@ body {
     right: var(--content-safe-right);
 }
 
-/* IKEA Style Components */
 .primary-button {
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    border-radius: 12px;
-    padding: 16px 32px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 3.8px solid rgba(255, 255, 255, 0.8);
+    border-radius: 48px;
+    padding: 18px 35px;
     font-family: 'Inter', sans-serif;
-    font-size: 1rem;
+    font-size: 1.6rem;
     font-weight: 500;
-    color: #333;
+    color: #ffffff;
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    width: 400px;
+    height: 80px;
 }
 
 .primary-button:hover {
-    background: rgba(255, 255, 255, 1);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.1);
+    /* transform: scale(1.1); */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Interactive Circles */
@@ -210,8 +211,8 @@ body {
 
 .interactive-circle {
     position: absolute;
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     pointer-events: all;
     cursor: pointer;
     z-index: 10;
@@ -220,7 +221,7 @@ body {
 .circle-glow {
     width: 100%;
     height: 100%;
-    border: 2px solid rgba(255, 255, 255, 0.8);
+    border: 3.8px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(5px);
@@ -229,9 +230,9 @@ body {
 }
 
 .interactive-circle:hover .circle-glow {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.1);
     transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes pulse {
@@ -239,11 +240,10 @@ body {
     50% { opacity: 1; box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
 }
 
-/* 圆圈位置调整 - 你可以在这里修改四个圆圈的位置 */
-#circle-1 { top: 65%; left: 30%; } /* 第一个圆圈位置 */
-#circle-2 { top: 50%; left: 35%; } /* 第二个圆圈位置 */
-#circle-3 { top: 70%; left: 65%; } /* 第三个圆圈位置 */
-#circle-4 { top: 38%; left: 43%; } /* 第四个圆圈位置 */
+#circle-1 { top: 65%; left: 30%; } 
+#circle-2 { top: 50%; left: 35%; } 
+#circle-3 { top: 70%; left: 65%; } 
+#circle-4 { top: 38%; left: 43%; } 
 #circle-1::before { content: "1"; }
 #circle-2::before { content: "2"; }
 #circle-3::before { content: "3"; }
@@ -255,11 +255,10 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-weight: 600;
     z-index: 11;
     pointer-events: none;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* Navigation Index */
@@ -270,20 +269,24 @@ body {
 .navigation-index {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    border-radius: 12px;
-    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 3.8px solid rgba(255, 255, 255, 0.8);
+    border-radius: 48px;
+    padding: 15px 15px;
     backdrop-filter: blur(10px);
-    gap: 16px;
+    gap: 30px;
+    width: 400px;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-arrow {
     background: none;
     border: none;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-weight: 600;
-    color: #333;
+    color: #ffffff;
     cursor: pointer;
     padding: 8px 12px;
     border-radius: 6px;
@@ -295,9 +298,9 @@ body {
 }
 
 .nav-title {
-    font-size: 1rem;
+    font-size: 1.6rem;
     font-weight: 500;
-    color: #333;
+    color: #ffffff;
     min-width: 140px;
     text-align: center;
 }
@@ -308,14 +311,14 @@ body {
 }
 
 .close-btn {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 3.8px solid rgba(255, 255, 255, 0.8);
+    font-size: 2.5rem;
     font-weight: 600;
-    color: #333;
+    color: #ffffff;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -325,7 +328,7 @@ body {
 }
 
 .close-btn:hover {
-    background: rgba(255, 255, 255, 1);
+    background: rgba(0, 0, 0, 0.1);
     transform: scale(1.1);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
@@ -359,28 +362,29 @@ body {
 
 /* Info Box */
 .info-box {
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid rgba(255, 255, 255, 0.9);
-    border-radius: 16px;
-    padding: 32px;
-    max-width: 400px;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    background: rgba(50, 50, 50, 0.3);
+    /* border: 3.8px solid rgba(255, 255, 255, 0.9); */
+    border-radius: 20px;
+    padding: 60px;
+    width: 700px;
+    height: 400px;
+    backdrop-filter: blur(6px);
+    /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); */
     z-index: 50;
 }
 
 .info-subtitle {
-    font-size: 1.5rem;
+    font-size: 3rem;
     font-weight: 600;
-    color: #333;
+    color: #ffffff;
     margin-bottom: 16px;
     line-height: 1.3;
 }
 
 .info-text {
-    font-size: 1rem;
+    font-size: 1.6rem;
     font-weight: 400;
-    color: #555;
+    color: #ffffff;
     line-height: 1.6;
 }
 
