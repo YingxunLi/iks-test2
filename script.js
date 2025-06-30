@@ -2,6 +2,7 @@ class InteractiveGame {
     constructor() {
         this.currentPage = '1';
         this.currentDetailState = 0; // 0: More Information, 1: Composition, 2: Height Range, 3: Location, 4: Status
+        this.entrySource = 'circle'; // 'circle' 或 'navigation'
         this.detailStates = [
             { name: 'More Information', page: '2' },
             { name: 'Composition', page: '2.1' },
@@ -25,9 +26,16 @@ class InteractiveGame {
             moreInfoBtn.addEventListener('click', () => this.goToPage('2'));
         }
 
+        // Page 1: Skip button
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => this.skipToModel());
+        }
+
         // Page 2: Interactive circles
         document.querySelectorAll('.interactive-circle').forEach((circle, index) => {
             circle.addEventListener('click', () => {
+                this.entrySource = 'circle';
                 this.currentDetailState = index + 1;
                 this.goToPage(this.detailStates[this.currentDetailState].page);
             });
@@ -73,8 +81,16 @@ class InteractiveGame {
             });
         }
 
-        // Detail videos
-        ['2-1', '2-2', '2-3', '2-4'].forEach(id => {
+        // 4-0.webm 特殊处理
+        const video40 = document.getElementById('video-4-0');
+        if (video40) {
+            video40.addEventListener('ended', () => {
+                this.startNormalPage2Loop();
+            });
+        }
+
+        // Detail videos - 包括所有视频
+        ['2-1', '2-2', '2-3', '2-4', '1-2', '2-3-nav', '3-4', '2-1-reverse', '3-2-reverse', '4-3-reverse'].forEach(id => {
             const video = document.getElementById(`video-${id}`);
             if (video) {
                 video.addEventListener('ended', () => {
@@ -114,10 +130,11 @@ class InteractiveGame {
         if (this.currentPage === '2') {
             // Navigate from main info page
             if (direction === 1) {
+                this.entrySource = 'navigation';
                 this.currentDetailState = 1;
                 this.goToPage('2.1');
             } else if (direction === -1) {
-                // 从页面2向左导航应该循环到最后一个状态
+                this.entrySource = 'navigation';
                 this.currentDetailState = 4;
                 this.goToPage('2.4');
             }
@@ -131,14 +148,21 @@ class InteractiveGame {
             this.currentDetailState = 4;
         } else if (newState > 4) {
             this.currentDetailState = 0;
+            // 特殊处理：从2.4导航>到状态2，先播放4-0.webm
+            this.entrySource = 'navigation';
+            this.isTransitionToPage2 = true;
+            this.goToPage('2');
+            return;
         } else {
             this.currentDetailState = newState;
         }
 
+        this.entrySource = 'navigation';
+        this.isReverse = direction === -1;
+        
         const targetPage = this.detailStates[this.currentDetailState].page;
         this.goToPage(targetPage);
         
-        // Update navigation title on page 2
         if (targetPage === '2') {
             this.updateNavigationTitle();
         }
@@ -184,29 +208,109 @@ class InteractiveGame {
     }
 
     resetPage2() {
-        const video2 = document.getElementById('video-2');
-        if (video2) {
-            video2.currentTime = 0;
-            video2.play();
+        if (this.isTransitionToPage2) {
+            // 从2.4导航>到页面2，先播放4-0.webm
+            this.playTransitionVideo();
+        } else {
+            // 正常进入页面2
+            this.startNormalPage2Loop();
         }
         this.updateNavigationTitle();
     }
 
-    startDetailPage(pageId) {
-        const videoId = pageId.replace('.', '-');
-        const video = document.getElementById(`video-${videoId}`);
-        const infoBox = document.getElementById(`info-box-${videoId}`);
+    playTransitionVideo() {
+        const video40 = document.getElementById('video-4-0');
+        const video2 = document.getElementById('video-2');
+        const circlesContainer = document.querySelector('.circles-container');
         
-        // Hide info box initially
-        if (infoBox) {
-            infoBox.style.display = 'none';
+        if (video2) video2.style.display = 'none';
+        // 在播放4-0.webm期间隐藏光圈
+        if (circlesContainer) circlesContainer.style.display = 'none';
+        
+        if (video40) {
+            video40.style.display = 'block';
+            video40.currentTime = 0;
+            video40.play();
+        }
+    }
+
+    startNormalPage2Loop() {
+        const video40 = document.getElementById('video-4-0');
+        const video2 = document.getElementById('video-2');
+        const circlesContainer = document.querySelector('.circles-container');
+        
+        if (video40) video40.style.display = 'none';
+        if (video2) {
+            video2.style.display = 'block';
+            video2.currentTime = 0;
+            video2.play();
         }
         
-        // Play video
+        // 显示光圈
+        if (circlesContainer) {
+            circlesContainer.style.display = 'block';
+        }
+        
+        // 重置过渡标记
+        this.isTransitionToPage2 = false;
+    }
+
+    startDetailPage(pageId) {
+        let videoId;
+        
+        // 根据进入方式和页面选择视频
+        if (this.entrySource === 'navigation') {
+            if (this.isReverse) {
+                // 倒放导航 (<)
+                switch (pageId) {
+                    case '2.1': videoId = '2-1-reverse'; break;
+                    case '2.2': videoId = '3-2-reverse'; break;  // 从2.3回到2.2播放3-2-reverse
+                    case '2.3': videoId = '4-3-reverse'; break;
+                    case '2.4': videoId = '2-4'; break;
+                    default: videoId = pageId.replace('.', '-');
+                }
+            } else {
+                // 正向导航 (>)
+                switch (pageId) {
+                    case '2.1': videoId = '2-1'; break;
+                    case '2.2': videoId = '1-2'; break;
+                    case '2.3': videoId = '2-3-nav'; break;
+                    case '2.4': videoId = '3-4'; break;
+                    default: videoId = pageId.replace('.', '-');
+                }
+            }
+        } else {
+            // 从光圈进入，使用默认视频
+            switch (pageId) {
+                case '2.1': videoId = '2-1'; break;
+                case '2.2': videoId = '2-2'; break;
+                case '2.3': videoId = '2-3'; break;
+                case '2.4': videoId = '2-4'; break;
+                default: videoId = pageId.replace('.', '-');
+            }
+        }
+        
+        const video = document.getElementById(`video-${videoId}`);
+        
+        // 隐藏所有视频和信息框
+        const currentPage = document.getElementById(`page-${pageId.replace('.', '-')}`);
+        if (currentPage) {
+            const allVideos = currentPage.querySelectorAll('video');
+            const allInfoBoxes = currentPage.querySelectorAll('.info-box');
+            
+            allVideos.forEach(v => v.style.display = 'none');
+            allInfoBoxes.forEach(box => box.style.display = 'none');
+        }
+        
+        // 显示并播放选定的视频
         if (video) {
+            video.style.display = 'block';
             video.currentTime = 0;
             video.play();
         }
+        
+        // 重置标记
+        this.isReverse = false;
     }
 
     showPage(pageId) {
@@ -220,6 +324,23 @@ class InteractiveGame {
         if (targetPage) {
             targetPage.style.display = 'block';
         }
+    }
+
+    skipToModel() {
+        // 停止视频播放
+        const video1 = document.getElementById('video-1');
+        if (video1) {
+            video1.pause();
+        }
+        
+        // 隐藏skip按钮
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.style.display = 'none';
+        }
+        
+        // 直接显示模型和按钮
+        this.showModelAndButton();
     }
 }
 
