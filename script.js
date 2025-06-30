@@ -3,6 +3,10 @@ class InteractiveGame {
         this.currentPage = '1';
         this.currentDetailState = 0; // 0: More Information, 1: Composition, 2: Height Range, 3: Location, 4: Status
         this.entrySource = 'circle'; // 'circle' 或 'navigation'
+        this.isTransitionFromPage21 = false; // 标记是否从2.1状态退出
+        this.isTransitionFromPage22 = false; // 标记是否从2.2状态退出
+        this.isTransitionFromPage23 = false; // 标记是否从2.3状态退出
+        this.isTransitionFromPage24 = false; // 新增：标记是否从2.4状态退出
         this.detailStates = [
             { name: 'More Information', page: '2' },
             { name: 'Composition', page: '2.1' },
@@ -61,8 +65,19 @@ class InteractiveGame {
         document.querySelectorAll('.close-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const targetPage = e.target.getAttribute('data-target');
-                // 修复：直接使用页面ID而不是完整的元素ID
                 const pageId = targetPage.replace('page-', '');
+                
+                // 检查是否从特定状态退出
+                if (this.currentPage === '2.1') {
+                    this.isTransitionFromPage21 = true;
+                } else if (this.currentPage === '2.2') {
+                    this.isTransitionFromPage22 = true;
+                } else if (this.currentPage === '2.3') {
+                    this.isTransitionFromPage23 = true;
+                } else if (this.currentPage === '2.4') {
+                    this.isTransitionFromPage24 = true;
+                }
+                
                 this.currentDetailState = 0; // 重置状态到"More Information"
                 this.goToPage(pageId);
             });
@@ -85,6 +100,30 @@ class InteractiveGame {
         const video40 = document.getElementById('video-4-0');
         if (video40) {
             video40.addEventListener('ended', () => {
+                this.startNormalPage2Loop();
+            });
+        }
+
+        // 1-0-reverse.webm 特殊处理
+        const video10Reverse = document.getElementById('video-1-0-reverse');
+        if (video10Reverse) {
+            video10Reverse.addEventListener('ended', () => {
+                this.startNormalPage2Loop();
+            });
+        }
+
+        // 2-0-reverse.webm 特殊处理
+        const video20Reverse = document.getElementById('video-2-0-reverse');
+        if (video20Reverse) {
+            video20Reverse.addEventListener('ended', () => {
+                this.startNormalPage2Loop();
+            });
+        }
+
+        // 3-0-reverse.webm 特殊处理
+        const video30Reverse = document.getElementById('video-3-0-reverse');
+        if (video30Reverse) {
+            video30Reverse.addEventListener('ended', () => {
                 this.startNormalPage2Loop();
             });
         }
@@ -145,7 +184,28 @@ class InteractiveGame {
         const newState = this.currentDetailState + direction;
         
         if (newState < 0) {
-            this.currentDetailState = 4;
+            // 从任何detail页面点击<返回页面2
+            if (this.currentPage === '2.1') {
+                // 从2.1点击<返回页面2，播放1-0-reverse.webm
+                console.log('Setting transition from page 2.1 flag via < navigation');
+                this.isTransitionFromPage21 = true;
+            } else if (this.currentPage === '2.2') {
+                // 从2.2点击<返回页面2，播放2-0-reverse.webm
+                console.log('Setting transition from page 2.2 flag via navigation');
+                this.isTransitionFromPage22 = true;
+            } else if (this.currentPage === '2.3') {
+                // 从2.3点击<返回页面2，播放3-0-reverse.webm
+                console.log('Setting transition from page 2.3 flag via navigation');
+                this.isTransitionFromPage23 = true;
+            } else if (this.currentPage === '2.4') {
+                // 从2.4点击<返回页面2，播放4-0.webm
+                console.log('Setting transition from page 2.4 flag via navigation');
+                this.isTransitionFromPage24 = true;
+            }
+            this.currentDetailState = 0;
+            this.entrySource = 'navigation';
+            this.goToPage('2');
+            return;
         } else if (newState > 4) {
             this.currentDetailState = 0;
             // 特殊处理：从2.4导航>到状态2，先播放4-0.webm
@@ -208,7 +268,27 @@ class InteractiveGame {
     }
 
     resetPage2() {
-        if (this.isTransitionToPage2) {
+        console.log('resetPage2 called with flags:', {
+            isTransitionFromPage21: this.isTransitionFromPage21,
+            isTransitionFromPage22: this.isTransitionFromPage22,
+            isTransitionFromPage23: this.isTransitionFromPage23,
+            isTransitionFromPage24: this.isTransitionFromPage24,
+            isTransitionToPage2: this.isTransitionToPage2
+        });
+        
+        if (this.isTransitionFromPage21) {
+            // 从2.1退出到页面2，先播放1-0-reverse.webm
+            this.playTransitionFromPage21();
+        } else if (this.isTransitionFromPage22) {
+            // 从2.2退出到页面2，先播放2-0-reverse.webm
+            this.playTransitionFromPage22();
+        } else if (this.isTransitionFromPage23) {
+            // 从2.3退出到页面2，先播放3-0-reverse.webm
+            this.playTransitionFromPage23();
+        } else if (this.isTransitionFromPage24) {
+            // 从2.4退出到页面2，先播放4-0.webm
+            this.playTransitionFromPage24();
+        } else if (this.isTransitionToPage2) {
             // 从2.4导航>到页面2，先播放4-0.webm
             this.playTransitionVideo();
         } else {
@@ -216,6 +296,136 @@ class InteractiveGame {
             this.startNormalPage2Loop();
         }
         this.updateNavigationTitle();
+    }
+
+    playTransitionFromPage21() {
+        console.log('Playing transition from page 2.1');
+        const video10Reverse = document.getElementById('video-1-0-reverse');
+        const video2 = document.getElementById('video-2');
+        const video40 = document.getElementById('video-4-0');
+        const circlesContainer = document.querySelector('.circles-container');
+        
+        // 隐藏其他视频
+        if (video2) video2.style.display = 'none';
+        if (video40) video40.style.display = 'none';
+        
+        // 在播放1-0-reverse.webm期间隐藏光圈
+        if (circlesContainer) circlesContainer.style.display = 'none';
+        
+        if (video10Reverse) {
+            console.log('Found video-1-0-reverse element, starting playback');
+            video10Reverse.style.display = 'block';
+            video10Reverse.currentTime = 0;
+            video10Reverse.play().catch(error => {
+                console.error('Failed to play 1-0-reverse video:', error);
+                // 如果视频播放失败，直接跳转到正常循环
+                this.startNormalPage2Loop();
+            });
+        } else {
+            console.error('video-1-0-reverse element not found');
+            // 如果找不到视频元素，直接跳转到正常循环
+            this.startNormalPage2Loop();
+        }
+    }
+
+    playTransitionFromPage22() {
+        console.log('Playing transition from page 2.2');
+        const video20Reverse = document.getElementById('video-2-0-reverse');
+        const video2 = document.getElementById('video-2');
+        const video40 = document.getElementById('video-4-0');
+        const video10Reverse = document.getElementById('video-1-0-reverse');
+        const circlesContainer = document.querySelector('.circles-container');
+        
+        // 隐藏其他视频
+        if (video2) video2.style.display = 'none';
+        if (video40) video40.style.display = 'none';
+        if (video10Reverse) video10Reverse.style.display = 'none';
+        
+        // 在播放2-0-reverse.webm期间隐藏光圈
+        if (circlesContainer) circlesContainer.style.display = 'none';
+        
+        if (video20Reverse) {
+            console.log('Found video-2-0-reverse element, starting playback');
+            video20Reverse.style.display = 'block';
+            video20Reverse.currentTime = 0;
+            video20Reverse.play().catch(error => {
+                console.error('Failed to play 2-0-reverse video:', error);
+                // 如果视频播放失败，直接跳转到正常循环
+                this.startNormalPage2Loop();
+            });
+        } else {
+            console.error('video-2-0-reverse element not found');
+            // 如果找不到视频元素，直接跳转到正常循环
+            this.startNormalPage2Loop();
+        }
+    }
+
+    playTransitionFromPage23() {
+        console.log('Playing transition from page 2.3');
+        const video30Reverse = document.getElementById('video-3-0-reverse');
+        const video2 = document.getElementById('video-2');
+        const video40 = document.getElementById('video-4-0');
+        const video10Reverse = document.getElementById('video-1-0-reverse');
+        const video20Reverse = document.getElementById('video-2-0-reverse');
+        const circlesContainer = document.querySelector('.circles-container');
+        
+        // 隐藏其他视频
+        if (video2) video2.style.display = 'none';
+        if (video40) video40.style.display = 'none';
+        if (video10Reverse) video10Reverse.style.display = 'none';
+        if (video20Reverse) video20Reverse.style.display = 'none';
+        
+        // 在播放3-0-reverse.webm期间隐藏光圈
+        if (circlesContainer) circlesContainer.style.display = 'none';
+        
+        if (video30Reverse) {
+            console.log('Found video-3-0-reverse element, starting playback');
+            video30Reverse.style.display = 'block';
+            video30Reverse.currentTime = 0;
+            video30Reverse.play().catch(error => {
+                console.error('Failed to play 3-0-reverse video:', error);
+                // 如果视频播放失败，直接跳转到正常循环
+                this.startNormalPage2Loop();
+            });
+        } else {
+            console.error('video-3-0-reverse element not found');
+            // 如果找不到视频元素，直接跳转到正常循环
+            this.startNormalPage2Loop();
+        }
+    }
+
+    playTransitionFromPage24() {
+        console.log('Playing transition from page 2.4');
+        const video40 = document.getElementById('video-4-0');
+        const video2 = document.getElementById('video-2');
+        const video10Reverse = document.getElementById('video-1-0-reverse');
+        const video20Reverse = document.getElementById('video-2-0-reverse');
+        const video30Reverse = document.getElementById('video-3-0-reverse');
+        const circlesContainer = document.querySelector('.circles-container');
+        
+        // 隐藏其他视频
+        if (video2) video2.style.display = 'none';
+        if (video10Reverse) video10Reverse.style.display = 'none';
+        if (video20Reverse) video20Reverse.style.display = 'none';
+        if (video30Reverse) video30Reverse.style.display = 'none';
+        
+        // 在播放4-0.webm期间隐藏光圈
+        if (circlesContainer) circlesContainer.style.display = 'none';
+        
+        if (video40) {
+            console.log('Found video-4-0 element, starting playback');
+            video40.style.display = 'block';
+            video40.currentTime = 0;
+            video40.play().catch(error => {
+                console.error('Failed to play 4-0 video:', error);
+                // 如果视频播放失败，直接跳转到正常循环
+                this.startNormalPage2Loop();
+            });
+        } else {
+            console.error('video-4-0 element not found');
+            // 如果找不到视频元素，直接跳转到正常循环
+            this.startNormalPage2Loop();
+        }
     }
 
     playTransitionVideo() {
@@ -236,10 +446,18 @@ class InteractiveGame {
 
     startNormalPage2Loop() {
         const video40 = document.getElementById('video-4-0');
+        const video10Reverse = document.getElementById('video-1-0-reverse');
+        const video20Reverse = document.getElementById('video-2-0-reverse');
+        const video30Reverse = document.getElementById('video-3-0-reverse');
         const video2 = document.getElementById('video-2');
         const circlesContainer = document.querySelector('.circles-container');
         
+        // 隐藏过渡视频
         if (video40) video40.style.display = 'none';
+        if (video10Reverse) video10Reverse.style.display = 'none';
+        if (video20Reverse) video20Reverse.style.display = 'none';
+        if (video30Reverse) video30Reverse.style.display = 'none';
+        
         if (video2) {
             video2.style.display = 'block';
             video2.currentTime = 0;
@@ -253,6 +471,10 @@ class InteractiveGame {
         
         // 重置过渡标记
         this.isTransitionToPage2 = false;
+        this.isTransitionFromPage21 = false;
+        this.isTransitionFromPage22 = false;
+        this.isTransitionFromPage23 = false;
+        this.isTransitionFromPage24 = false;
     }
 
     startDetailPage(pageId) {
