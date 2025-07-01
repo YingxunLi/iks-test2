@@ -24,75 +24,46 @@ class InteractiveGame {
     }
 
     setupEventListeners() {
-        // 创建统一的事件处理函数
-        const addUniversalEventListener = (element, handler) => {
-            // 鼠标事件
-            element.addEventListener('click', handler);
-            // 触摸事件
-            element.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                handler(e);
-            });
-            // 指针事件（适用于现代触摸屏）
-            if ('onpointerdown' in element) {
-                element.addEventListener('pointerup', (e) => {
-                    if (e.pointerType === 'touch' || e.pointerType === 'pen') {
-                        e.preventDefault();
-                        handler(e);
-                    }
-                });
-            }
-            // 阻止默认的触摸行为
-            element.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-            });
-        };
-
         // Page 1: More Information button
         const moreInfoBtn = document.getElementById('more-info-btn');
         if (moreInfoBtn) {
-            addUniversalEventListener(moreInfoBtn, () => this.goToPage('2'));
+            moreInfoBtn.addEventListener('click', () => this.goToPage('2'));
         }
 
         // Page 1: Skip button
         const skipBtn = document.getElementById('skip-btn');
         if (skipBtn) {
-            addUniversalEventListener(skipBtn, () => this.skipToModel());
+            skipBtn.addEventListener('click', () => this.skipToModel());
         }
 
         // Page 2: Interactive circles
         document.querySelectorAll('.interactive-circle').forEach((circle, index) => {
-            const handler = () => {
+            circle.addEventListener('click', () => {
                 this.entrySource = 'circle';
                 this.currentDetailState = index + 1;
                 this.goToPage(this.detailStates[this.currentDetailState].page);
-            };
-            addUniversalEventListener(circle, handler);
+            });
         });
 
         // Navigation arrows on page 2
         const navPrev = document.getElementById('nav-prev');
         const navNext = document.getElementById('nav-next');
         
-        if (navPrev) {
-            addUniversalEventListener(navPrev, () => this.navigateDetail(-1));
-        }
-        if (navNext) {
-            addUniversalEventListener(navNext, () => this.navigateDetail(1));
-        }
+        if (navPrev) navPrev.addEventListener('click', () => this.navigateDetail(-1));
+        if (navNext) navNext.addEventListener('click', () => this.navigateDetail(1));
 
         // Detail pages navigation
         document.querySelectorAll('[data-nav="prev"]').forEach(btn => {
-            addUniversalEventListener(btn, () => this.navigateDetail(-1));
+            btn.addEventListener('click', () => this.navigateDetail(-1));
         });
         
         document.querySelectorAll('[data-nav="next"]').forEach(btn => {
-            addUniversalEventListener(btn, () => this.navigateDetail(1));
+            btn.addEventListener('click', () => this.navigateDetail(1));
         });
 
         // Close buttons
         document.querySelectorAll('.close-btn').forEach(btn => {
-            const handler = (e) => {
+            btn.addEventListener('click', (e) => {
                 const targetPage = e.target.getAttribute('data-target');
                 const pageId = targetPage.replace('page-', '');
                 
@@ -109,8 +80,7 @@ class InteractiveGame {
                 
                 this.currentDetailState = 0; // 重置状态到"More Information"
                 this.goToPage(pageId);
-            };
-            addUniversalEventListener(btn, handler);
+            });
         });
 
         // Video ended events
