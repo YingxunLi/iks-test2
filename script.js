@@ -19,8 +19,46 @@ class InteractiveGame {
     }
 
     init() {
+        this.setupCustomCursor();
         this.setupEventListeners();
         this.startPage1();
+    }
+
+    setupCustomCursor() {
+        // 创建自定义光标元素
+        const cursor = document.createElement('div');
+        cursor.className = 'custom-cursor';
+        document.body.appendChild(cursor);
+
+        // 鼠标移动事件
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+
+        // 鼠标进入可点击元素时的效果
+        const clickableElements = document.querySelectorAll('button, .interactive-circle, .nav-arrow, .close-btn');
+        
+        const addHoverEffects = () => {
+            const elements = document.querySelectorAll('button, .interactive-circle, .nav-arrow, .close-btn');
+            elements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hover');
+                });
+                element.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hover');
+                });
+            });
+        };
+
+        // 初始化悬停效果
+        addHoverEffects();
+
+        // 页面变化时重新添加悬停效果
+        const observer = new MutationObserver(() => {
+            addHoverEffects();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
     }
 
     setupEventListeners() {

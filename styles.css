@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    cursor: none; /* 隐藏默认光标 */
 }
 
 body {
@@ -11,6 +12,98 @@ body {
     width: 100vw;
     height: 100vh;
     position: relative;
+}
+
+/* 自定义圆形光标 - 更多样式选项 */
+.custom-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: all 0.15s ease;
+    backdrop-filter: blur(2px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.custom-cursor.hover {
+    transform: scale(2);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3));
+    border: 3px solid rgba(255, 255, 255, 1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+/* 可选：其他光标样式 */
+/* 方形光标 */
+/*
+.custom-cursor {
+    border-radius: 4px;
+    transform: rotate(45deg);
+}
+*/
+
+/* 十字形光标 */
+/*
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border: none;
+}
+
+.custom-cursor::before,
+.custom-cursor::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.custom-cursor::before {
+    width: 20px;
+    height: 2px;
+    top: 9px;
+    left: 0;
+}
+
+.custom-cursor::after {
+    width: 2px;
+    height: 20px;
+    top: 0;
+    left: 9px;
+}
+*/
+
+/* 星形光标 */
+/*
+.custom-cursor {
+    width: 0;
+    height: 0;
+    background: transparent;
+    border: none;
+    position: relative;
+}
+
+.custom-cursor::before {
+    content: '★';
+    position: absolute;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.9);
+    top: -10px;
+    left: -10px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+}
+*/
+
+/* 可点击元素恢复指针样式 */
+button, .interactive-circle, .nav-arrow, .close-btn {
+    cursor: none !important;
 }
 
 /* Typography System */
