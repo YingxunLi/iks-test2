@@ -372,8 +372,19 @@ body {
     transform: translateX(-50%);
     display: flex;
     align-items: center;
-    gap: 30px;
+    justify-content: center;
     z-index: 101;
+}
+
+.bottom-controls .navigation-container {
+    position: relative;
+}
+
+.bottom-controls .close-button {
+    position: absolute;
+    left: calc(200px + 250px);
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 
@@ -427,8 +438,8 @@ body {
     background: rgba(122, 122, 122, 0.4);
     backdrop-filter: blur(6px);
     /* 使用径向渐变创建圆形窗口 - 反转蒙版效果 */
-    mask: radial-gradient(circle 330px at 28% 50%, transparent 320px, black 340px);
-    -webkit-mask: radial-gradient(circle 330px at 28% 50%, transparent 320px, black 340px);
+    mask: radial-gradient(circle 500px at 28% 50%, transparent 490px, black 510px);
+    -webkit-mask: radial-gradient(circle 500px at 28% 50%, transparent 490px, black 510px);
     z-index: 25;
     pointer-events: none;
     opacity: 0;
@@ -543,4 +554,5 @@ body {
     }
         width: 50px;
         height: 50px;
+    }
     }
