@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none; /* 隐藏默认光标 */
+    cursor: none;
 }
 
 body {
@@ -14,96 +14,16 @@ body {
     position: relative;
 }
 
-/* 自定义圆形光标 - 更多样式选项 */
+/* 极简高性能光标 */
 .custom-cursor {
     position: fixed;
     width: 20px;
     height: 20px;
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
-    border: 2px solid rgba(255, 255, 255, 0.9);
+    background: white;
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    mix-blend-mode: difference;
-    transition: all 0.15s ease;
-    backdrop-filter: blur(2px);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-.custom-cursor.hover {
-    transform: scale(2);
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3));
-    border: 3px solid rgba(255, 255, 255, 1);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-}
-
-/* 可选：其他光标样式 */
-/* 方形光标 */
-/*
-.custom-cursor {
-    border-radius: 4px;
-    transform: rotate(45deg);
-}
-*/
-
-/* 十字形光标 */
-/*
-.custom-cursor {
-    width: 20px;
-    height: 20px;
-    background: transparent;
-    border: none;
-}
-
-.custom-cursor::before,
-.custom-cursor::after {
-    content: '';
-    position: absolute;
-    background: rgba(255, 255, 255, 0.9);
-}
-
-.custom-cursor::before {
-    width: 20px;
-    height: 2px;
-    top: 9px;
-    left: 0;
-}
-
-.custom-cursor::after {
-    width: 2px;
-    height: 20px;
-    top: 0;
-    left: 9px;
-}
-*/
-
-/* 星形光标 */
-/*
-.custom-cursor {
-    width: 0;
-    height: 0;
-    background: transparent;
-    border: none;
-    position: relative;
-}
-
-.custom-cursor::before {
-    content: '★';
-    position: absolute;
-    font-size: 20px;
-    color: rgba(255, 255, 255, 0.9);
-    top: -10px;
-    left: -10px;
-    text-align: center;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-}
-*/
-
-/* 可点击元素恢复指针样式 */
-button, .interactive-circle, .nav-arrow, .close-btn {
-    cursor: none !important;
+    will-change: transform;
 }
 
 /* Typography System */
@@ -404,13 +324,12 @@ button, .interactive-circle, .nav-arrow, .close-btn {
 }
 
 .close-btn {
+    z-index: 101;
     width: 60px;
     height: 60px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
     border: 3.8px solid rgba(255, 255, 255, 0.8);
-    font-size: 2.5rem;
-    font-weight: 600;
     color: #ffffff;
     cursor: pointer;
     display: flex;
@@ -418,6 +337,25 @@ button, .interactive-circle, .nav-arrow, .close-btn {
     justify-content: center;
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
+    position: relative;
+}
+
+.close-btn::before,
+.close-btn::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 3px;
+    background: #ffffff;
+    border-radius: 2px;
+}
+
+.close-btn::before {
+    transform: rotate(45deg);
+}
+
+.close-btn::after {
+    transform: rotate(-45deg);
 }
 
 .close-btn:hover {
@@ -426,14 +364,27 @@ button, .interactive-circle, .nav-arrow, .close-btn {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Bottom Controls Container */
+.bottom-controls {
+    position: absolute;
+    bottom: var(--content-safe-bottom);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    z-index: 101;
+}
+
+
 /* Skip Button */
 .skip-button {
     z-index: 102;
 }
 
 .skip-btn {
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     padding: 8px 16px;
     font-family: 'Saira', sans-serif;
@@ -447,7 +398,7 @@ button, .interactive-circle, .nav-arrow, .close-btn {
 }
 
 .skip-btn:hover {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.2);
     color: white;
     opacity: 1;
     transform: scale(1.05);
@@ -455,15 +406,39 @@ button, .interactive-circle, .nav-arrow, .close-btn {
 
 /* Info Box */
 .info-box {
-    background: rgba(50, 50, 50, 0.3);
+    background: rgba(0, 0, 0, 0.3);
     /* border: 3.8px solid rgba(255, 255, 255, 0.9); */
     border-radius: 20px;
     padding: 60px;
     width: 700px;
     height: 400px;
-    backdrop-filter: blur(6px);
+    /* backdrop-filter: blur(6px); */
     /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); */
     z-index: 50;
+}
+
+/* Mask Effect with Circular Window */
+.mask-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(122, 122, 122, 0.4);
+    backdrop-filter: blur(6px);
+    /* 使用径向渐变创建圆形窗口 - 反转蒙版效果 */
+    mask: radial-gradient(circle 330px at 28% 50%, transparent 320px, black 340px);
+    -webkit-mask: radial-gradient(circle 330px at 28% 50%, transparent 320px, black 340px);
+    z-index: 25;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    display: none;
+}
+
+.mask-overlay.show {
+    opacity: 1;
+    display: block;
 }
 
 .info-subtitle {
@@ -534,3 +509,38 @@ button, .interactive-circle, .nav-arrow, .close-btn {
         height: 50px;
     }
 }
+    
+    
+    .interactive-circle {
+        width: 50px;
+        height: 50px;
+    }
+    
+    
+    .interactive-circle {
+        width: 50px;
+        height: 50px;
+    }
+        font-size: 0.9rem;
+    }
+    
+    .interactive-circle {
+        width: 50px;
+        height: 50px;
+    }
+}
+    
+    
+    .interactive-circle {
+        width: 50px;
+        height: 50px;
+    }
+    
+    
+    .interactive-circle {
+        width: 50px;
+        height: 50px;
+    }
+        width: 50px;
+        height: 50px;
+    }

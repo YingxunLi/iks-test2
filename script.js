@@ -15,6 +15,9 @@ class InteractiveGame {
             { name: 'Status', page: '2.4' }
         ];
         
+        this.cursorX = 0;
+        this.cursorY = 0;
+
         this.init();
     }
 
@@ -25,40 +28,24 @@ class InteractiveGame {
     }
 
     setupCustomCursor() {
-        // 创建自定义光标元素
         const cursor = document.createElement('div');
         cursor.className = 'custom-cursor';
         document.body.appendChild(cursor);
+        this.cursor = cursor;
 
-        // 鼠标移动事件
+        // 使用更高频率的事件监听
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 10 + 'px';
-            cursor.style.top = e.clientY - 10 + 'px';
-        });
+            this.cursorX = e.clientX;
+            this.cursorY = e.clientY;
+            // 立即更新位置以获得最大响应性
+            this.cursor.style.transform = `translate(${this.cursorX - 6}px, ${this.cursorY - 6}px)`;
+        }, { passive: true });
 
-        // 鼠标进入可点击元素时的效果
-        const clickableElements = document.querySelectorAll('button, .interactive-circle, .nav-arrow, .close-btn');
-        
-        const addHoverEffects = () => {
-            const elements = document.querySelectorAll('button, .interactive-circle, .nav-arrow, .close-btn');
-            elements.forEach(element => {
-                element.addEventListener('mouseenter', () => {
-                    cursor.classList.add('hover');
-                });
-                element.addEventListener('mouseleave', () => {
-                    cursor.classList.remove('hover');
-                });
-            });
+        // 备用的 requestAnimationFrame 循环以确保流畅性
+        const updateCursor = () => {
+            requestAnimationFrame(updateCursor);
         };
-
-        // 初始化悬停效果
-        addHoverEffects();
-
-        // 页面变化时重新添加悬停效果
-        const observer = new MutationObserver(() => {
-            addHoverEffects();
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
+        updateCursor();
     }
 
     setupEventListeners() {
@@ -126,10 +113,18 @@ class InteractiveGame {
     }
 
     setupVideoEvents() {
-        // Page 1 video
+        // Page 1 video sequence
         const video1 = document.getElementById('video-1');
         if (video1) {
             video1.addEventListener('ended', () => {
+                this.playVideo3();
+            });
+        }
+
+        // Page 1 video-3
+        const video3 = document.getElementById('video-3');
+        if (video3) {
+            video3.addEventListener('ended', () => {
                 this.showModelAndButton();
             });
         }
@@ -185,22 +180,67 @@ class InteractiveGame {
         }
     }
 
+    playVideo3() {
+        const video1 = document.getElementById('video-1');
+        const video3 = document.getElementById('video-3');
+        
+        // Hide video-1 and show video-3
+        if (video1) video1.style.display = 'none';
+        if (video3) {
+            video3.style.display = 'block';
+            video3.currentTime = 0;
+            video3.play();
+        }
+    }
+
     showModelAndButton() {
-        // Fade out video, show model and button
-        const videoContainer = document.querySelector('#page-1 .animation-container');
+        // Fade out videos, show model and button
+        const video1 = document.getElementById('video-1');
+        const video3 = document.getElementById('video-3');
         const modelContainer = document.getElementById('model-1');
         const buttonContainer = document.getElementById('more-info-btn');
 
-        if (videoContainer) videoContainer.style.display = 'none';
+        if (video1) video1.style.display = 'none';
+        if (video3) video3.style.display = 'none';
         if (modelContainer) modelContainer.style.display = 'block';
         if (buttonContainer) buttonContainer.style.display = 'block';
     }
 
     showInfoBox(videoId) {
         const infoBox = document.getElementById(`info-box-${videoId}`);
+        const maskOverlay = this.getMaskOverlay(videoId);
+        
         if (infoBox) {
             infoBox.style.display = 'block';
         }
+        
+        // 显示蒙版效果
+        if (maskOverlay) {
+            maskOverlay.style.display = 'block';
+            // 使用setTimeout确保display属性生效后再添加透明度动画
+            setTimeout(() => {
+                maskOverlay.classList.add('show');
+            }, 10);
+        }
+    }
+
+    getMaskOverlay(videoId) {
+        // 根据videoId确定当前页面并获取对应的蒙版
+        let pageId;
+        if (videoId.includes('2-1') || videoId.includes('2-1-reverse')) {
+            pageId = 'page-2-1';
+        } else if (videoId.includes('2-2') || videoId.includes('1-2') || videoId.includes('3-2-reverse')) {
+            pageId = 'page-2-2';
+        } else if (videoId.includes('2-3') || videoId.includes('4-3-reverse') || videoId.includes('2-3-nav')) {
+            pageId = 'page-2-3';
+        } else if (videoId.includes('2-4') || videoId.includes('3-4')) {
+            pageId = 'page-2-4';
+        }
+    
+        if (pageId) {
+            return document.querySelector(`#${pageId} .mask-overlay`);
+        }
+        return null;
     }
 
     navigateDetail(direction) {
@@ -301,8 +341,19 @@ class InteractiveGame {
             case '2.3':
             case '2.4':
                 this.startDetailPage(pageId);
+                // 确保切换页面时隐藏所有蒙版
+                this.hideAllMasks();
                 break;
         }
+    }
+
+    hideAllMasks() {
+        document.querySelectorAll('.mask-overlay').forEach(mask => {
+            mask.classList.remove('show');
+            setTimeout(() => {
+                mask.style.display = 'none';
+            }, 500);
+        });
     }
 
     resetPage2() {
@@ -557,9 +608,18 @@ class InteractiveGame {
         if (currentPage) {
             const allVideos = currentPage.querySelectorAll('video');
             const allInfoBoxes = currentPage.querySelectorAll('.info-box');
+            const maskOverlay = currentPage.querySelector('.mask-overlay');
             
             allVideos.forEach(v => v.style.display = 'none');
             allInfoBoxes.forEach(box => box.style.display = 'none');
+            
+            // 隐藏蒙版
+            if (maskOverlay) {
+                maskOverlay.classList.remove('show');
+                setTimeout(() => {
+                    maskOverlay.style.display = 'none';
+                }, 500);
+            }
         }
         
         // 显示并播放选定的视频
@@ -587,10 +647,14 @@ class InteractiveGame {
     }
 
     skipToModel() {
-        // 停止视频播放
+        // 停止所有视频播放
         const video1 = document.getElementById('video-1');
+        const video3 = document.getElementById('video-3');
         if (video1) {
             video1.pause();
+        }
+        if (video3) {
+            video3.pause();
         }
         
         // 隐藏skip按钮
