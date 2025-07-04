@@ -586,8 +586,14 @@ body {
 .volcano-info-label {
     font-size: 14px;
     font-weight: 600;
-    color: #c6bebe;
+    color: #ffffff;
     opacity: 0.8;
+}
+
+.volcano-info-value.volcano-name {
+    font-size: 38px;
+    font-weight: 600;
+    color: #ffffff; /* 更亮的白色 */
 }
 
 .volcano-info-value {
@@ -596,6 +602,7 @@ body {
     color: #a2a5a8;
     line-height: 1.4;
 }
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
