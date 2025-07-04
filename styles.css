@@ -532,8 +532,7 @@ body {
         width: 50px;
         height: 50px;
     }
-        font-size: 0.9rem;
-    }
+ 
     
     .interactive-circle {
         width: 50px;
@@ -560,7 +559,6 @@ body {
     background: rgba(0, 0, 0, 0);
     border-radius: 12px;
     padding: 20px;
-    color: white;
     font-family: 'Saira', sans-serif;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -588,14 +586,14 @@ body {
 .volcano-info-label {
     font-size: 14px;
     font-weight: 600;
-    color: #ffffff;
+    color: #c6bebe;
     opacity: 0.8;
 }
 
 .volcano-info-value {
     font-size: 20px;
     font-weight: 400;
-    color: #ffffff;
+    color: #a2a5a8;
     line-height: 1.4;
 }
 
