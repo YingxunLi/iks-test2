@@ -28,24 +28,17 @@
         </div>
         
         <!-- Skip Button -->
-        <div class="skip-button top-right" id="skip-btn">
+        <div class="skip-button" id="skip-btn">
             <button class="skip-btn">Skip</button>
         </div>
         
-        <!-- Model Container -->
-        <div class="model-container" id="model-1" style="display: none;">
-            <model-viewer 
-                src="assets/1.glb" 
-                camera-controls 
-                auto-rotate 
-                ar 
-                class="fullscreen-model">
-            </model-viewer>
-        </div>
-        
-        <!-- More Information Button -->
-        <div class="button-container bottom-center" id="more-info-btn" style="display: none;">
-            <button class="primary-button">More Information</button>
+        <!-- Home Button -->
+        <div class="home-button">
+            <button class="home-btn" id="home-btn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </button>
         </div>
     </div>
 
@@ -68,6 +61,20 @@
             <video class="fullscreen-video" id="video-3-0-reverse" muted style="display: none;">
                 <source src="assets/3-0-reverse.webm" type="video/webm">
             </video>
+        </div>
+        
+        <!-- Model Button -->
+        <div class="model-button" id="model-btn">
+            <button class="skip-btn" id="model-toggle-btn">Model</button>
+        </div>
+        
+        <!-- Home Button -->
+        <div class="home-button">
+            <button class="home-btn" id="home-btn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </button>
         </div>
         
         <!-- Volcano Basic Info Box -->
@@ -99,7 +106,7 @@
         </div>
 
         <!-- Interactive Circles -->
-       <div class="circles-container">
+        <div class="circles-container">
             <div class="interactive-circle" id="circle-1" data-state="2.1">
                 <div class="circle-glow"></div>
             </div>
@@ -121,6 +128,17 @@
                 <span class="nav-title" id="nav-title">More Information</span>
                 <button class="nav-arrow" id="nav-next">&gt;</button>
             </div>
+        </div>
+        
+        <!-- Model Container - 移到页面底部 -->
+        <div class="model-container" id="model-container" style="display: none;">
+            <model-viewer 
+                src="assets/1.glb" 
+                camera-controls 
+                auto-rotate 
+                ar 
+                class="fullscreen-model">
+            </model-viewer>
         </div>
     </div>
 
@@ -167,6 +185,15 @@
             <div class="close-button">
                 <button class="close-btn" data-target="page-2"></button>
             </div>
+        </div>
+
+        <!-- Home Button -->
+        <div class="home-button">
+            <button class="home-btn" id="home-btn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </button>
         </div>
     </div>
 
@@ -222,6 +249,15 @@
                 <button class="close-btn" data-target="page-2"></button>
             </div>
         </div>
+
+        <!-- Home Button -->
+        <div class="home-button">
+            <button class="home-btn" id="home-btn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </button>
+        </div>
     </div>
 
     <div class="page detail-page" id="page-2-3" data-page="2.3" style="display: none;">
@@ -276,6 +312,15 @@
                 <button class="close-btn" data-target="page-2"></button>
             </div>
         </div>
+
+        <!-- Home Button -->
+        <div class="home-button">
+            <button class="home-btn" id="home-btn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </button>
+        </div>
     </div>
 
     <div class="page detail-page" id="page-2-4" data-page="2.4" style="display: none;">
@@ -329,6 +374,15 @@
             <div class="close-button">
                 <button class="close-btn" data-target="page-2"></button>
             </div>
+        </div>
+
+        <!-- Home Button -->
+        <div class="home-button">
+            <button class="home-btn" id="home-btn">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+            </button>
         </div>
     </div>
 

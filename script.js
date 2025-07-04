@@ -1,12 +1,12 @@
 class InteractiveGame {
     constructor() {
         this.currentPage = '1';
-        this.currentDetailState = 0; // 0: More Information, 1: Composition, 2: Height Range, 3: Location, 4: Status
-        this.entrySource = 'circle'; // 'circle' 或 'navigation'
-        this.isTransitionFromPage21 = false; // 标记是否从2.1状态退出
-        this.isTransitionFromPage22 = false; // 标记是否从2.2状态退出
-        this.isTransitionFromPage23 = false; // 标记是否从2.3状态退出
-        this.isTransitionFromPage24 = false; // 新增：标记是否从2.4状态退出
+        this.currentDetailState = 0;
+        this.entrySource = 'circle';
+        this.isTransitionFromPage21 = false;
+        this.isTransitionFromPage22 = false;
+        this.isTransitionFromPage23 = false;
+        this.isTransitionFromPage24 = false;
         this.detailStates = [
             { name: 'More Information', page: '2' },
             { name: 'Composition', page: '2.1' },
@@ -17,6 +17,7 @@ class InteractiveGame {
         
         this.cursorX = 0;
         this.cursorY = 0;
+        this.isModelMode = false;
 
         this.init();
     }
@@ -49,24 +50,32 @@ class InteractiveGame {
     }
 
     setupEventListeners() {
-        // Page 1: More Information button
-        const moreInfoBtn = document.getElementById('more-info-btn');
-        if (moreInfoBtn) {
-            moreInfoBtn.addEventListener('click', () => this.goToPage('2'));
-        }
-
         // Page 1: Skip button
         const skipBtn = document.getElementById('skip-btn');
         if (skipBtn) {
-            skipBtn.addEventListener('click', () => this.skipToModel());
+            skipBtn.addEventListener('click', () => this.skipToPage2());
+        }
+
+        // Home buttons - 处理多个页面的home按钮
+        const homeBtns = document.querySelectorAll('.home-btn');
+        homeBtns.forEach(btn => {
+            btn.addEventListener('click', () => this.goToHome());
+        });
+
+        // Page 2: Model toggle button
+        const modelToggleBtn = document.getElementById('model-toggle-btn');
+        if (modelToggleBtn) {
+            modelToggleBtn.addEventListener('click', () => this.toggleModel());
         }
 
         // Page 2: Interactive circles
         document.querySelectorAll('.interactive-circle').forEach((circle, index) => {
             circle.addEventListener('click', () => {
-                this.entrySource = 'circle';
-                this.currentDetailState = index + 1;
-                this.goToPage(this.detailStates[this.currentDetailState].page);
+                if (!this.isModelMode) {
+                    this.entrySource = 'circle';
+                    this.currentDetailState = index + 1;
+                    this.goToPage(this.detailStates[this.currentDetailState].page);
+                }
             });
         });
 
@@ -74,8 +83,12 @@ class InteractiveGame {
         const navPrev = document.getElementById('nav-prev');
         const navNext = document.getElementById('nav-next');
         
-        if (navPrev) navPrev.addEventListener('click', () => this.navigateDetail(-1));
-        if (navNext) navNext.addEventListener('click', () => this.navigateDetail(1));
+        if (navPrev) navPrev.addEventListener('click', () => {
+            if (!this.isModelMode) this.navigateDetail(-1);
+        });
+        if (navNext) navNext.addEventListener('click', () => {
+            if (!this.isModelMode) this.navigateDetail(1);
+        });
 
         // Detail pages navigation
         document.querySelectorAll('[data-nav="prev"]').forEach(btn => {
@@ -103,7 +116,7 @@ class InteractiveGame {
                     this.isTransitionFromPage24 = true;
                 }
                 
-                this.currentDetailState = 0; // 重置状态到"More Information"
+                this.currentDetailState = 0;
                 this.goToPage(pageId);
             });
         });
@@ -121,11 +134,11 @@ class InteractiveGame {
             });
         }
 
-        // Page 1 video-3
+        // Page 1 video-3 - 直接跳转到页面2
         const video3 = document.getElementById('video-3');
         if (video3) {
             video3.addEventListener('ended', () => {
-                this.showModelAndButton();
+                this.goToPage('2');
             });
         }
 
@@ -193,17 +206,111 @@ class InteractiveGame {
         }
     }
 
-    showModelAndButton() {
-        // Fade out videos, show model and button
+    toggleModel() {
+        if (this.isModelMode) {
+            this.hideModel();
+        } else {
+            this.showModel();
+        }
+    }
+
+    showModel() {
+        const modelContainer = document.getElementById('model-container');
+        const animationContainer = document.querySelector('#page-2 .animation-container');
+        const circlesContainer = document.querySelector('.circles-container');
+        const volcanoInfoBox = document.getElementById('volcano-info-box');
+        const navigationContainer = document.querySelector('.navigation-container');
+        const modelToggleBtn = document.getElementById('model-toggle-btn');
+        const cursor = document.querySelector('.custom-cursor');
+
+        // 显示模型容器
+        if (modelContainer) {
+            modelContainer.style.display = 'block';
+        }
+        
+        // 隐藏页面2的内容，但保留背景
+        if (animationContainer) animationContainer.style.display = 'none';
+        if (circlesContainer) circlesContainer.style.display = 'none';
+        if (volcanoInfoBox) volcanoInfoBox.style.display = 'none';
+        if (navigationContainer) navigationContainer.style.display = 'none';
+        if (cursor) cursor.style.display = 'none';
+        
+        // 停止所有视频播放
+        const allVideos = document.querySelectorAll('#page-2 video');
+        allVideos.forEach(video => {
+            video.pause();
+        });
+        
+        // 更新按钮文本
+        if (modelToggleBtn) {
+            modelToggleBtn.textContent = 'Info';
+        }
+        
+        this.isModelMode = true;
+    }
+
+    hideModel() {
+        const modelContainer = document.getElementById('model-container');
+        const animationContainer = document.querySelector('#page-2 .animation-container');
+        const circlesContainer = document.querySelector('.circles-container');
+        const volcanoInfoBox = document.getElementById('volcano-info-box');
+        const navigationContainer = document.querySelector('.navigation-container');
+        const modelToggleBtn = document.getElementById('model-toggle-btn');
+        const cursor = document.querySelector('.custom-cursor');
+
+        // 隐藏模型容器
+        if (modelContainer) {
+            modelContainer.style.display = 'none';
+        }
+        
+        // 显示所有其他内容
+        if (animationContainer) animationContainer.style.display = 'block';
+        if (circlesContainer) circlesContainer.style.display = 'block';
+        if (volcanoInfoBox) volcanoInfoBox.style.display = 'block';
+        if (navigationContainer) navigationContainer.style.display = 'block';
+        if (cursor) cursor.style.display = 'block';
+        
+        // 确保回到状态2
+        this.currentDetailState = 0;
+        this.currentPage = '2';
+        
+        // 恢复正常的页面2循环
+        this.startNormalPage2Loop();
+        
+        // 更新按钮文本
+        if (modelToggleBtn) {
+            modelToggleBtn.textContent = 'Model';
+        }
+        
+        // 更新导航标题
+        this.updateNavigationTitle();
+        
+        this.isModelMode = false;
+    }
+
+    skipToPage2() {
+        // 停止所有视频播放
         const video1 = document.getElementById('video-1');
         const video3 = document.getElementById('video-3');
-        const modelContainer = document.getElementById('model-1');
-        const buttonContainer = document.getElementById('more-info-btn');
+        if (video1) {
+            video1.pause();
+        }
+        if (video3) {
+            video3.pause();
+        }
+        
+        // 隐藏skip按钮
+        const skipBtn = document.getElementById('skip-btn');
+        if (skipBtn) {
+            skipBtn.style.display = 'none';
+        }
+        
+        // 直接跳转到页面2
+        this.goToPage('2');
+    }
 
-        if (video1) video1.style.display = 'none';
-        if (video3) video3.style.display = 'none';
-        if (modelContainer) modelContainer.style.display = 'block';
-        if (buttonContainer) buttonContainer.style.display = 'block';
+    goToHome() {
+        window.open('https://www.figma.com/proto/GqnnsQKK6yuj0g1gwqtgis/iks-wireframes?node-id=1-2&t=VR4R3mO74ujdnUMC-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=299%3A89&show-proto-sidebar=1', '_blank');
     }
 
     showInfoBox(videoId) {
@@ -253,7 +360,7 @@ class InteractiveGame {
             } else if (direction === -1) {
                 this.entrySource = 'navigation';
                 this.currentDetailState = 4;
-                this.goToPage('2.4');
+                this
             }
             return;
         }
@@ -357,6 +464,10 @@ class InteractiveGame {
     }
 
     resetPage2() {
+        // 确保Model按钮可见
+        const modelBtn = document.getElementById('model-btn');
+        if (modelBtn) modelBtn.style.display = 'block';
+        
         console.log('resetPage2 called with flags:', {
             isTransitionFromPage21: this.isTransitionFromPage21,
             isTransitionFromPage22: this.isTransitionFromPage22,
@@ -366,22 +477,16 @@ class InteractiveGame {
         });
         
         if (this.isTransitionFromPage21) {
-            // 从2.1退出到页面2，先播放1-0-reverse.webm
             this.playTransitionFromPage21();
         } else if (this.isTransitionFromPage22) {
-            // 从2.2退出到页面2，先播放2-0-reverse.webm
             this.playTransitionFromPage22();
         } else if (this.isTransitionFromPage23) {
-            // 从2.3退出到页面2，先播放3-0-reverse.webm
             this.playTransitionFromPage23();
         } else if (this.isTransitionFromPage24) {
-            // 从2.4退出到页面2，先播放4-0.webm
             this.playTransitionFromPage24();
         } else if (this.isTransitionToPage2) {
-            // 从2.4导航>到页面2，先播放4-0.webm
             this.playTransitionVideo();
         } else {
-            // 正常进入页面2
             this.startNormalPage2Loop();
         }
         this.updateNavigationTitle();
@@ -550,6 +655,9 @@ class InteractiveGame {
         const video2 = document.getElementById('video-2');
         const circlesContainer = document.querySelector('.circles-container');
         const volcanoInfoBox = document.getElementById('volcano-info-box');
+        const animationContainer = document.querySelector('#page-2 .animation-container');
+        const navigationContainer = document.querySelector('.navigation-container');
+        const modelBtn = document.getElementById('model-btn');
 
         // 隐藏过渡视频
         if (video40) video40.style.display = 'none';
@@ -557,20 +665,21 @@ class InteractiveGame {
         if (video20Reverse) video20Reverse.style.display = 'none';
         if (video30Reverse) video30Reverse.style.display = 'none';
         
+        // 确保动画容器可见
+        if (animationContainer) animationContainer.style.display = 'block';
+        
+        // 播放正常循环视频
         if (video2) {
             video2.style.display = 'block';
             video2.currentTime = 0;
             video2.play();
         }
         
-        // 显示光圈
-        if (circlesContainer) {
-            circlesContainer.style.display = 'block';
-        }
-        // 显示火山信息框
-        if (volcanoInfoBox) {
-            volcanoInfoBox.style.display = 'block';
-        }
+        // 显示所有UI元素
+        if (circlesContainer) circlesContainer.style.display = 'block';
+        if (volcanoInfoBox) volcanoInfoBox.style.display = 'block';
+        if (navigationContainer) navigationContainer.style.display = 'block';
+        if (modelBtn) modelBtn.style.display = 'block';
         
         // 重置过渡标记
         this.isTransitionToPage2 = false;
