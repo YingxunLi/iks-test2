@@ -393,7 +393,8 @@ class InteractiveGame {
         const video2 = document.getElementById('video-2');
         const video40 = document.getElementById('video-4-0');
         const circlesContainer = document.querySelector('.circles-container');
-        
+        const volcanoInfoBox = document.getElementById('volcano-info-box');
+
         // 隐藏其他视频
         if (video2) video2.style.display = 'none';
         if (video40) video40.style.display = 'none';
@@ -424,7 +425,8 @@ class InteractiveGame {
         const video40 = document.getElementById('video-4-0');
         const video10Reverse = document.getElementById('video-1-0-reverse');
         const circlesContainer = document.querySelector('.circles-container');
-        
+        const volcanoInfoBox = document.getElementById('volcano-info-box');
+
         // 隐藏其他视频
         if (video2) video2.style.display = 'none';
         if (video40) video40.style.display = 'none';
@@ -432,7 +434,8 @@ class InteractiveGame {
         
         // 在播放2-0-reverse.webm期间隐藏光圈
         if (circlesContainer) circlesContainer.style.display = 'none';
-        
+        if (volcanoInfoBox) volcanoInfoBox.style.display = 'none';
+
         if (video20Reverse) {
             console.log('Found video-2-0-reverse element, starting playback');
             video20Reverse.style.display = 'block';
@@ -457,7 +460,8 @@ class InteractiveGame {
         const video10Reverse = document.getElementById('video-1-0-reverse');
         const video20Reverse = document.getElementById('video-2-0-reverse');
         const circlesContainer = document.querySelector('.circles-container');
-        
+        const volcanoInfoBox = document.getElementById('volcano-info-box');
+
         // 隐藏其他视频
         if (video2) video2.style.display = 'none';
         if (video40) video40.style.display = 'none';
@@ -466,7 +470,8 @@ class InteractiveGame {
         
         // 在播放3-0-reverse.webm期间隐藏光圈
         if (circlesContainer) circlesContainer.style.display = 'none';
-        
+        if (volcanoInfoBox) volcanoInfoBox.style.display = 'none';
+
         if (video30Reverse) {
             console.log('Found video-3-0-reverse element, starting playback');
             video30Reverse.style.display = 'block';
@@ -491,6 +496,8 @@ class InteractiveGame {
         const video20Reverse = document.getElementById('video-2-0-reverse');
         const video30Reverse = document.getElementById('video-3-0-reverse');
         const circlesContainer = document.querySelector('.circles-container');
+        const volcanoInfoBox = document.getElementById('volcano-info-box');
+
         
         // 隐藏其他视频
         if (video2) video2.style.display = 'none';
@@ -500,7 +507,8 @@ class InteractiveGame {
         
         // 在播放4-0.webm期间隐藏光圈
         if (circlesContainer) circlesContainer.style.display = 'none';
-        
+        if (volcanoInfoBox) volcanoInfoBox.style.display = 'none';
+
         if (video40) {
             console.log('Found video-4-0 element, starting playback');
             video40.style.display = 'block';
@@ -521,7 +529,8 @@ class InteractiveGame {
         const video40 = document.getElementById('video-4-0');
         const video2 = document.getElementById('video-2');
         const circlesContainer = document.querySelector('.circles-container');
-        
+        const volcanoInfoBox = document.getElementById('volcano-info-box');
+
         if (video2) video2.style.display = 'none';
         // 在播放4-0.webm期间隐藏光圈
         if (circlesContainer) circlesContainer.style.display = 'none';
@@ -540,7 +549,8 @@ class InteractiveGame {
         const video30Reverse = document.getElementById('video-3-0-reverse');
         const video2 = document.getElementById('video-2');
         const circlesContainer = document.querySelector('.circles-container');
-        
+        const volcanoInfoBox = document.getElementById('volcano-info-box');
+
         // 隐藏过渡视频
         if (video40) video40.style.display = 'none';
         if (video10Reverse) video10Reverse.style.display = 'none';
@@ -556,6 +566,10 @@ class InteractiveGame {
         // 显示光圈
         if (circlesContainer) {
             circlesContainer.style.display = 'block';
+        }
+        // 显示火山信息框
+        if (volcanoInfoBox) {
+            volcanoInfoBox.style.display = 'block';
         }
         
         // 重置过渡标记

@@ -539,20 +539,83 @@ body {
         width: 50px;
         height: 50px;
     }
+
+    
+    
+    .interactive-circle {
+        width: 50px;
+        height: 50px;
+    }
+    
+    
+    .interactive-circle {
+        width: 50px;
+        height: 50px;
+    }
+
+
+    /* Volcano Info Box Styles */
+.volcano-info-box {
+    position: absolute;
+    background: rgba(0, 0, 0, 0);
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+    font-family: 'Saira', sans-serif;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 550px;
+    z-index: 100;
 }
-    
-    
-    .interactive-circle {
-        width: 50px;
-        height: 50px;
+
+.volcano-info-box.top-left {
+    top: var(--content-safe-top);
+    left: var(--content-safe-left);
+}
+
+.volcano-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.volcano-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.volcano-info-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    opacity: 0.8;
+}
+
+.volcano-info-value {
+    font-size: 20px;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 1.4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .volcano-info-box {
+        max-width: 280px;
+        padding: 16px;
     }
     
+    .volcano-info-box.top-left {
+        top: 20px;
+        left: 20px;
+    }
     
-    .interactive-circle {
-        width: 50px;
-        height: 50px;
+    .volcano-info-label {
+        font-size: 12px;
     }
-        width: 50px;
-        height: 50px;
+    
+    .volcano-info-value {
+        font-size: 14px;
     }
-    }
+}
