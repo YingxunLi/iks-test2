@@ -232,8 +232,8 @@ model-viewer * {
 
 .interactive-circle {
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     pointer-events: all;
     cursor: pointer;
     z-index: 10;
@@ -406,24 +406,27 @@ model-viewer * {
 
 .skip-btn {
     background: rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 8px 16px;
+    border: 3.8px solid rgba(255, 255, 255, 0.8);
+    border-radius: 30px;
+    padding: 15px 30px;
     font-family: 'Saira', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: white;
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
-    opacity: 0.7;
+    min-width: 120px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .skip-btn:hover {
     background: rgba(0, 0, 0, 0.2);
-    color: white;
-    opacity: 1;
     transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Model Button */
@@ -436,24 +439,27 @@ model-viewer * {
 
 .model-button .skip-btn {
     background: rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 8px 16px;
+    border: 3.8px solid rgba(255, 255, 255, 0.8);
+    border-radius: 30px;
+    padding: 15px 30px;
     font-family: 'Saira', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: white;
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
-    opacity: 0.7;
+    min-width: 120px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .model-button .skip-btn:hover {
     background: rgba(0, 0, 0, 0.2);
-    color: white;
-    opacity: 1;
     transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Home Button */
@@ -558,8 +564,6 @@ model-viewer * {
 }
 
 /* Responsive Design */
-@media
-/* Responsive Design */
 @media (max-width: 768px) {
     :root {
         --content-safe-top: 3vh;
@@ -598,40 +602,8 @@ model-viewer * {
         height: 50px;
     }
 }
-    
-    
-    .interactive-circle {
-        width: 50px;
-        height: 50px;
-    }
-    
-    
-    .interactive-circle {
-        width: 50px;
-        height: 50px;
-    }
- 
-    
-    .interactive-circle {
-        width: 50px;
-        height: 50px;
-    }
 
-    
-    
-    .interactive-circle {
-        width: 50px;
-        height: 50px;
-    }
-    
-    
-    .interactive-circle {
-        width: 50px;
-        height: 50px;
-    }
-
-
-    /* Volcano Info Box Styles */
+/* Volcano Info Box Styles */
 .volcano-info-box {
     position: absolute;
     background: rgba(0, 0, 0, 0);
@@ -662,22 +634,22 @@ model-viewer * {
 }
 
 .volcano-info-label {
-    font-size: 14px;
+    font-size: 20px;
     font-weight: 600;
-    color: #ffffff;
+    color: #527f4b;
     opacity: 0.8;
 }
 
 .volcano-info-value.volcano-name {
-    font-size: 38px;
+    font-size: 48px;
     font-weight: 600;
-    color: #ffffff; /* 更亮的白色 */
+    color: #36662E;
 }
 
 .volcano-info-value {
-    font-size: 20px;
+    font-size: 30px;
     font-weight: 400;
-    color: #a2a5a8;
+    color: #36662E;
     line-height: 1.4;
 }
 
