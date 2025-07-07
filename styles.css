@@ -474,8 +474,8 @@ model-viewer * {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 3.8px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0);
+    border: 3.8px solid rgba(255, 255, 255, 0);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -492,8 +492,10 @@ model-viewer * {
 }
 
 .home-btn svg {
-    width: 24px;
-    height: 24px;
+    width: 34px;
+    height: 34px;
+    /* width: 24px;
+    height: 24px; */
     fill: white;
 }
 
